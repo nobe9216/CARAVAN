@@ -1,8 +1,10 @@
 class BlogsController < ApplicationController
   def index
+    @blogs = Blog.all
   end
 
   def show
+    @blog = Blog.find(params[:id])
   end
 
   def new
@@ -11,10 +13,18 @@ class BlogsController < ApplicationController
 
   def create
     blog = Blog.new(blog_params)
-    redirect_to blogs_path
+    blog.save
+    redirect_to blog_path(blog.id)
   end
 
   def edit
+    @blog = Blog.find(params[:id])
+  end
+
+  def update
+    blog = Blog.find(params[:id])
+    blog.update(blog_params)
+    redirect_to blog_path(blog)
   end
 
   private
@@ -22,4 +32,4 @@ class BlogsController < ApplicationController
     params.require(:blog).permit(:title, :category, :body)
   end
 
-end
+ end
